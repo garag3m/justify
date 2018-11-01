@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="utf-8">
+
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Notable|PT+Sans|Srisakdi" rel="stylesheet">
+  </head>
+  <style>
+
+	</style>
+  <body>
+    <h1> Balanço de Solicitações de Reposicões</h1>
+    <table>
+      <tr>
+        <th >Nome do usuário </th>
+        <th>Matricula</th>
+        <th>Período da falta</th>
+        <th>Motivo</th>
+        <th>Turma</th>
+
+      </tr>
+  {% for object in dados %}
+    <td style="text-align:justify;">{{object.usuario.first_name}} {{object.usuario.last_name}}</td>
+    <td>{{ object.usuario.registration }}</td>
+    <td style="width: 60%; text-align:justify; padding-left: 50px" >{% if object.date_miss_start.day <= 9 %} 0{{object.date_miss_start.day}}{% else %}{{object.date_miss_start.day}}{% endif %}/{% if object.date_miss_start.month <= 9 %}0{{object.date_miss_start.month}}{% else %}{{object.date_miss_start.month}}{% endif %}/{{object.date_miss_start.year}} - {% if object.date_miss_end.day <= 9 %} 0{{object.date_miss_end.day}}{% else %} {{object.date_miss_end.day}}{% endif %}/{% if object.date_miss_end.month <= 9 %}0{{object.date_miss_end.month}}{% else %}{{object.date_miss_end.month}}{% endif %}/{{object.date_miss_end.year}}</td>
+    <td>{{object.reason}}</td>
+
+    <td>{{object.team}}</td>
+
+  </tr>
+  {% endfor %}
+  </table>
+  </br>
+
+  </body>
+</html>

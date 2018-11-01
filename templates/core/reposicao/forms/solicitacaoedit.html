@@ -1,0 +1,48 @@
+{% extends '../../base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+
+<section class="content">
+  <div class="box box-danger">
+    <div class="box-header with-border">
+      <h3 class="box-title">Formulário</h3>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    <form class="form-horizontal" method="POST">
+  {% csrf_token %}
+  <div class="box-body">
+  {% for field in form.visible_fields %}
+  <div class="row">
+
+    <div class="col-md-200">
+
+    <div class="form-group">
+       <label class="col-sm-2 control-label">{{ field.label }}</label>
+      <div class="col-md-6">
+          {% if field.label == 'Data da Falta Inicial' %}
+            <input type="date" class="form-control" id="date_miss_start" name="date_miss_start" style="width: 30%; float: left;" >
+          {% elif field.label == 'Data da Falta Final' %}
+            <input type="date" class="form-control" id="date_miss_end" name="date_miss_end" style="width: 30%;  float: left; position: relative; top:0; margin:0;" >
+        {% else %}
+          {{ field|add_class:'form-control' }}
+        {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+        {% endfor %}
+        {% endif %}
+      </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}    <!-- /.box-body -->
+      <div class="box-footer">
+        <button type="submit" class="btn btn-success pull-right">Salvar</button>
+        <a href="{% url 'reposicao:historico'%}" class="btn btn-default">Cancel</a>
+      </div>
+      <!-- /.box-footer -->
+    </form>
+  </div>
+</section>
+{% endblock %}

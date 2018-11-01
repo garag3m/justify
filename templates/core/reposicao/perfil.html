@@ -1,0 +1,15 @@
+{% extends '../base.html'%}
+{% load static %}
+{% block content %}
+<img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
+  <p>Nome: {{ request.user.username }}</p>
+  <p>Matricula: {{ request.user.registration }} </p>
+  <p>Email: {{ request.user.email }} </p>
+  <p>CPF: {{ request.user.cpf }} </p>
+  {% for object in object_list %}
+  	{% if object.pk == request.user.pk %}
+   <a href="{% url 'reposicao:perfilup' object.pk %}"><button>Editar</button></a>
+   	{% endif %}
+   <!-- Content Header (Page header) -->
+  {% endfor %}
+{% endblock %}

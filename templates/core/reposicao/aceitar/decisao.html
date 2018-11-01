@@ -1,0 +1,51 @@
+{% extends '../../base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-header" >
+  <h1>Requerimento de Troca de Aula <small>Professor {{object.solicitante.first_name}} {{object.solicitante.last_name}} o professor {{object.solicitado.first_name}} {{object.solicitado.last_name}} solicita permissão para trocar de aula</small></h1>
+
+  <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="{% url 'reposicao:professores' %}"> Troca de aula</a></li>
+        <li class="active">Aceitar Troca</li>
+  </ol>
+</section>
+
+<section class="content">
+<div class="box box-warning"  >
+  <h3 class="box-title">
+    Formulário para aceitar pedido de troca de aula {{ object.solicitation.usuario.username }}
+  </h3>
+  <div class="box-body">
+  {% if user.is_authenticated %}
+
+  <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="user-image"  style="border-radius: 100%;" >
+    <div style="margin-top:40px; margin-bottom:40px;">
+      <p><big>Professor</big>: {{object.solicitante.first_name}} {{object.solicitante.last_name}}</p>
+      <p><big>matrícula</big><small>(professor solicitante)</small>:{{object.solicitante.registration}}
+      <p><big>email</big> : {{object.solicitante.email}}
+      <p>mensagem de {{object.solicitante.first_name}} {{object.solicitante.last_name}}: {{object.mensagem}}</p>
+    </div>
+<div style="display: inline;">
+<div class="box-footer" style="width: 40%;">
+<form method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="status" id="status" value="2">
+  <button type="submit" class="btn btn-success" style="float:left;" >Aceitar</button>
+</form>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="status" id="status" value="0">
+    <button type="submit" class="btn btn-danger pull-right">Negar</button>
+</div>
+</form>
+</div>
+{% else %}
+  <p> Para aceitar ou negar o pedido de troca de aula, será necessário está logado no sistema </p>
+
+{% endif %}
+</div>
+</div>
+</section>
+{% endblock %}

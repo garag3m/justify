@@ -1,0 +1,70 @@
+{% extends '../../base.html' %}
+{% block content %}
+<section class="content-header" >
+  <h1>Planejamento <small>Formulário de preenchimento do planejamento da aula</small></h1>
+
+  <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href=" {% url 'reposicao:formrep' %}" >Reposição de Aula</a></li>
+        <li class="active">Planejamento da aula</li>
+  </ol>
+</section>
+
+
+<section class="content">
+  <div class="box box-default" style="margin:0;" >
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" id="solicitation" name="solicitation" value="{{object.solicitation.id}}" />
+        <div class="box-body">
+          <div class="row" style="margin-bottom:20px;">
+            <div class="col-md-100">
+              <div class="form-group">
+                  <label class="col-sm-2 control-label"> Data da aula: </label>
+                  <div class="col-md-2">
+                    <input type="date" class="form-control" id="date_class" name="date_class" >
+                  </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom:20px;" style="margin-bottom:40px;" >
+            <div class="col-md-100">
+              <div class="form-group">
+                <label class="col-sm-2 control-label"> Data da falta: </label>
+                <div class="col-md-2">
+                  <input type="date" class="form-control" id="date_restitution" name="date_restitution"  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom:20px;">
+            <div class="col-md-100">
+              <div class="form-group">
+                <label class="col-sm-2 control-label"> Componente Curricular: </label>
+                <div class="col-md-4">
+                  <input type="text" id="components" name="components" class="form-control">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom:20px;">
+            <div class="col-md-100">
+              <div class="form-group">
+                <label class="col-sm-2 control-label"> Descrição: </label>
+                <div class="col-md-5">
+                  <textarea id="descripition" class="form-control" name="descripition" rows="3" cols="10" type="text" placeholder="Descreva a atividade realizada"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+    <div class="box-footer" style="width: 60%;">
+      <input type="submit" class="btn btn-primary pull-right" value="Enviar" />
+    </div>
+
+  </div>
+</form>
+</section>
+{% endblock %}

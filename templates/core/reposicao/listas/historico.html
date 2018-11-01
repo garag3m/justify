@@ -1,0 +1,145 @@
+{% extends '../../base.html'%}
+
+{% block content %}
+      {% if erro %}
+      <div class="alert alert-danger alert-dismissible" id='alert'>
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true" id="exit" onclick="alertoff()">X</button>
+                <h4><i class="icon fa fa-warning"></i> Desculpe!</h4>Não encontramos nenhum Usuário ou solicitação com os dados requeridos
+              </div>
+      {% endif %}
+<section class="content-header" style="margin-bottom: 30px;">
+    <h1>
+      Usuários
+      <small>it all starts here</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="{% url 'core:dashboard' %}"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="#">Historico</li>
+    </ol>
+    <div class="box-tools">
+      <div class="input-group input-group-sm" style="width: 100%;">
+
+        <form method="get">
+          {% csrf_token %}
+          <div class="input-group-btn"  >
+            {% if request.user.is_staff %}
+              <input class="form-control pull-left " style="width: 20%; float: left;" placeholder="Nome, Matrícula" type="text" name="name" id="name">
+            <button type="submit" class="btn btn-default" name="search" style="float: left;  margin-right: 20px;" id="search"><i class="fa fa-search"></i></button>
+            {% endif %}
+          <input type="date" style="width: 15%; margin-right: 20px;" name="data_inicio" id="data_inicio" class="form-control " placeholder="dd/mm/aaaa">
+          <input type="date" style="width: 15%;"name="data_fim" id="data_fim" class="form-control " placeholder="dd/mm/aaaa">
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+</section>
+  <!-- Main content -->
+  <section class="content">
+  <div class="wrapper">
+  <div class="box-body table-responsive no-padding">
+    <table class="table table-hover">
+            <tr>
+              <th>Professor</th>
+              <th>Matricula</th>
+              <th>Periodo da Falta</th>
+              <th>Turma-Período</th>
+              <th>Data de Reposicao</th>
+              <th>Status</th>
+            </tr>
+            {%if request.user.is_staff%}
+            {% for solicitation in solicitacao %}
+
+            <tr>
+                <td>{{ solicitation.usuario.first_name }} {{solicitation.usuario.last_name}}</td>
+                <td>{{ solicitation.usuario.registration }}</td>
+                <td>{% if solicitation.date_miss_start.day <= 9 %} 0{{solicitation.date_miss_start.day}}{% else %}{{solicitation.date_miss_start.day}}{% endif %}/{% if solicitation.date_miss_start.month <= 9 %}0{{solicitation.date_miss_start.month}}{% else %}{{solicitation.date_miss_start.month}}{% endif %}/{{solicitation.date_miss_start.year}} - {% if solicitation.date_miss_end.day <= 9 %} 0{{solicitation.date_miss_end.day}}{% else %} {{solicitation.date_miss_end.day}}{% endif %}/{% if solicitation.date_miss_end.month <= 9 %}0{{solicitation.date_miss_end.month}}{% else %}{{solicitation.date_miss_end.month}}{% endif %}/{{solicitation.date_miss_end.year}}</td>
+                <td>{{solicitation.team}}</td>
+                {% if Planejamento %}
+                    <td>{% for plannig in Planejamento %}{% if plannig.solicitation == solicitation %}{% if plannig.date_restitution.day > 9 %}{{ plannig.date_restitution.day }}/{{plannig.date_restitution.month}}/{{plannig.date_restitution.year}}{% else %}0{{ plannig.date_restitution.day }}/{{plannig.date_restitution.month}}/{{plannig.date_restitution.year}}{% endif %}{% endif %}{% endfor %}</td>
+
+                {% else %}
+                  <td></td>
+                {% endif %}
+                {% for object in object_list %}
+                    {% if object.solicitation == solicitation %}
+
+                        {% if object.status == 3 %}
+
+                            <td> <span class=" btn btn-success">Aprovada</span>{% for plannig in Planejamento %}{% if plannig.solicitation == solicitation %}<a href="{% url 'reposicao:imprimirplanejamento' plannig.pk %}"><i style=' margin-left: 10px; margin-top:5px; font-size: 20px;' class='fa fa-print'><i></a>{% endif %}{% endfor %}</td>
+
+                        {% elif object.status == 0 %}
+
+                          <td><span class=" btn btn-danger">Negada</span><a href="{% url 'reposicao:solicitacaoedit' object.solicitation.pk %}" ><i style=' margin-left: 10px; margin-top:5px; font-size: 20px;' class="fa fa-edit "></i></a> </td>
+                        {% else %}
+
+                          <td> <span class="btn btn-warning">Em Andamento</span></td>
+
+                      {% endif %}
+                </tr>
+
+                    {% endif %}
+                  {% endfor %}
+                  {% endfor %}
+            {% else %}
+              {% for solicitation in solicitacao %}
+              {%if request.user.username == solicitation.usuario.username%}
+
+              <tr>
+                  <td>{{ solicitation.usuario.first_name }} {{solicitation.usuario.last_name}}</td>
+                  <td>{{ solicitation.usuario.registration }}</td>
+                  <td>{% if solicitation.date_miss_start.day <= 9 %} 0{{solicitation.date_miss_start.day}}{% else %}{{solicitation.date_miss_start.day}}{% endif %}/{% if solicitation.date_miss_start.month <= 9 %}0{{solicitation.date_miss_start.month}}{% else %}{{solicitation.date_miss_start.month}}{% endif %}/{{solicitation.date_miss_start.year}} - {% if solicitation.date_miss_end.day <= 9 %} 0{{solicitation.date_miss_end.day}}{% else %} {{solicitation.date_miss_end.day}}{% endif %}/{% if solicitation.date_miss_end.month <= 9 %}0{{solicitation.date_miss_end.month}}{% else %}{{solicitation.date_miss_end.month}}{% endif %}/{{solicitation.date_miss_end.year}}</td>
+                  <td>{{solicitation.team}}</td>
+                  {% if Planejamento %}
+                      <td>{% for plannig in Planejamento %}{% if plannig.solicitation == solicitation %}{% if plannig.date_restitution.day > 9 %}{{ plannig.date_restitution.day }}/{{plannig.date_restitution.month}}/{{plannig.date_restitution.year}}{% else %}0{{ plannig.date_restitution.day }}/{{plannig.date_restitution.month}}/{{plannig.date_restitution.year}}{% endif %}{% endif %}{% endfor %}</td>
+
+                  {% else %}
+                    <td></td>
+                  {% endif %}
+                  {% for object in object_list %}
+                      {% if object.solicitation == solicitation %}
+
+                          {% if object.status == 3 %}
+
+                              <td> <span class=" btn btn-success">Aprovada</span>{% for plannig in Planejamento %}{% if plannig.solicitation == solicitation %}<a href="{% url 'reposicao:imprimirplanejamento' plannig.pk %}"><i style=' margin-left: 10px; margin-top:5px; font-size: 20px;' class='fa fa-print'><i></a>{% endif %}{% endfor %}</td>
+
+                          {% elif object.status == 0 %}
+
+                        {% elif object.status == 0 %}
+
+                          <td><span class=" btn btn-danger">Negada</span><a href="{% url 'reposicao:solicitacaoedit' object.solicitation.pk %}" ><i style=' margin-left: 10px; margin-top:5px; font-size: 20px;' class="fa fa-edit "></i></a> </td>
+                        {% else %}
+
+                          <td> <span class="btn btn-warning">Em Andamento</span></td>
+
+
+                        {% endif %}
+                  </tr>
+                      {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
+{% block teste %}
+
+{% endblock %}
+        </table>
+
+      </div>
+</div>
+<div class="box-footer">
+        Tabela de Reposições
+      </div>
+
+</section>
+<script>
+  alert = document.getElementById('alert');
+  exit = document.getElementById('exit');
+  function alertoff() {
+    // body...
+    alert.style.display = 'none';
+  }
+</script>
+{% endblock %}

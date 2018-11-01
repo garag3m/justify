@@ -1,0 +1,42 @@
+{% extends '../../base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-header" >
+  <h1>Mensagens</h1>
+
+  <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="{% url 'reposicao:professores' %}">Troca de aula</a></li>
+        <li class="active">Mensagem</li>
+  </ol>
+</section>
+
+<section class="content">
+<div class="box box-default">
+  <h3 class="box-title">
+    Professor {{object}}
+  </h3>
+<div class="box-body">
+  <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="user-image"  style="border-radius: 100%;" >
+
+    <div style="margin: 40px 0;">
+  <p><big>Professor</big><small>(nome completo)</small>:  {{ object.first_name }} {{object.last_name}}</p>
+
+  <p><big>Matricula</big>: {{ object.registration }} </p>
+  <p><big>Email</big>: {{object.email}}</p>
+<div style="margin-top: 40px;">
+<form method="post">
+  {% csrf_token %}
+    <input type="hidden" id="solicitado" name="solicitado" value="{{object}}" />
+    <p class="label-control">Mensagem:</p>
+    <textarea id="mensagem" name="mensagem" rows="3" cols="60" type="text" placeholder="Digite uma mensagem para {{object}}"></textarea>
+  </div>
+  </div>
+  <div class="box-footer" style="width: 50%;">
+    <input type="submit" class="btn btn-primary pull-right" value="Enviar" />
+  </div>
+
+</form>
+</div>
+</section>
+{% endblock %}

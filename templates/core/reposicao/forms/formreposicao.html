@@ -1,0 +1,51 @@
+{% extends '../../base.html'%}
+{% load widget_tweaks %}
+{% block content %}
+<section class="content-header" >
+  <h1>Formulário de Reposição <small>Formulário de preenchimento da solicição de Reposição</small></h1>
+
+  <ol class="breadcrumb">
+        <li><a href="{% url 'core:dashboard' %}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Reposição de Aula</li>
+  </ol>
+</section>
+<section class="content">
+<div class="box box-default"  >
+
+
+<form method="post">
+  {% csrf_token %}
+  <div class="box-body">
+  {% for field in form.visible_fields %}
+  <div class="row">
+
+    <div class="col-md-200">
+
+    <div class="form-group">
+       <label class="col-sm-2 control-label">{{ field.label }}</label>
+      <div class="col-md-6">
+          {% if field.label == 'Data da Falta Inicial' %}
+            <input type="date" class="form-control" id="date_miss_start" name="date_miss_start" style="width: 30%; float: left;" >
+          {% elif field.label == 'Data da Falta Final' %}
+            <input type="date" class="form-control" id="date_miss_end" name="date_miss_end" style="width: 30%;  float: left; position: relative; top:0; margin:0;" >
+        {% else %}
+          {{ field|add_class:'form-control' }}
+        {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+        {% endfor %}
+        {% endif %}
+      </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+  <div class="box-footer" style="width: 65%">
+    <a href="{% url 'core:dashboard' %}" class="btn btn-danger">Close</a>
+    <input type="submit" class="btn btn-primary pull-right"  name="sender" id="sender" value="Enviar" />
+      </div>
+    <input type="hidden" name="usuario" id="usuario" value="{{ resquest.user }}">
+</form>
+</div>
+</section>
+{% endblock %}
