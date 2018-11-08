@@ -56,23 +56,36 @@
                 <td>{{ solicitation.usuario.registration }}</td>
                 <td>{% if solicitation.date_miss_start.day <= 9 %} 0{{solicitation.date_miss_start.day}}{% else %}{{solicitation.date_miss_start.day}}{% endif %}/{% if solicitation.date_miss_start.month <= 9 %}0{{solicitation.date_miss_start.month}}{% else %}{{solicitation.date_miss_start.month}}{% endif %}/{{solicitation.date_miss_start.year}} - {% if solicitation.date_miss_end.day <= 9 %} 0{{solicitation.date_miss_end.day}}{% else %} {{solicitation.date_miss_end.day}}{% endif %}/{% if solicitation.date_miss_end.month <= 9 %}0{{solicitation.date_miss_end.month}}{% else %}{{solicitation.date_miss_end.month}}{% endif %}/{{solicitation.date_miss_end.year}}</td>
                 <td>{{solicitation.team}}</td>
-                {% if Planejamento %}
-                    <td>{% for plannig in Planejamento %}{% if plannig.solicitation == solicitation %}{% if plannig.date_restitution.day > 9 %}{{ plannig.date_restitution.day }}/{{plannig.date_restitution.month}}/{{plannig.date_restitution.year}}{% else %}0{{ plannig.date_restitution.day }}/{{plannig.date_restitution.month}}/{{plannig.date_restitution.year}}{% endif %}{% endif %}{% endfor %}</td>
-
-                {% else %}
-                  <td></td>
-                {% endif %}
                 {% for object in object_list %}
                     {% if object.solicitation == solicitation %}
-
                         {% if object.status == 3 %}
 
+                            {% if Planejamento %}
+                                <td>{% for plannig in Planejamento %}{% if plannig.solicitation == solicitation %}{% if plannig.date_restitution.day > 9 %}{{ plannig.date_restitution.day }}/{{plannig.date_restitution.month}}/{{plannig.date_restitution.year}}{% else %}0{{ plannig.date_restitution.day }}/{{plannig.date_restitution.month}}/{{plannig.date_restitution.year}}{% endif %}{% endif %}{% endfor %}<a href="{% url 'reposicao:planejamento' object.pk %}"><i style=' margin-left: 10px; margin-top:5px; font-size: 20px; text-align: center;' class="fa fa-edit "></i></a></td>
+
+                            {% else %}
+                                <td><a href="{% url 'reposicao:planejamento' object.pk %}"><i style=' margin-left: 10px; margin-top:5px; font-size: 20px;' class="fa fa-edit "></i></a></td>
+                            {% endif %}
                             <td> <span class=" btn btn-success">Aprovada</span>{% for plannig in Planejamento %}{% if plannig.solicitation == solicitation %}<a href="{% url 'reposicao:imprimirplanejamento' plannig.pk %}"><i style=' margin-left: 10px; margin-top:5px; font-size: 20px;' class='fa fa-print'><i></a>{% endif %}{% endfor %}</td>
 
                         {% elif object.status == 0 %}
 
+                          {% if Planejamento %}
+                                <td>{% for plannig in Planejamento %}{% if plannig.solicitation == solicitation %}{% if plannig.date_restitution.day > 9 %}{{ plannig.date_restitution.day }}/{{plannig.date_restitution.month}}/{{plannig.date_restitution.year}}{% else %}0{{ plannig.date_restitution.day }}/{{plannig.date_restitution.month}}/{{plannig.date_restitution.year}}{% endif %}{% endif %}{% endfor %}</td>
+
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+
                           <td><span class=" btn btn-danger">Negada</span><a href="{% url 'reposicao:solicitacaoedit' object.solicitation.pk %}" ><i style=' margin-left: 10px; margin-top:5px; font-size: 20px;' class="fa fa-edit "></i></a> </td>
                         {% else %}
+
+                          {% if Planejamento %}
+                                <td>{% for plannig in Planejamento %}{% if plannig.solicitation == solicitation %}{% if plannig.date_restitution.day > 9 %}{{ plannig.date_restitution.day }}/{{plannig.date_restitution.month}}/{{plannig.date_restitution.year}}{% else %}0{{ plannig.date_restitution.day }}/{{plannig.date_restitution.month}}/{{plannig.date_restitution.year}}{% endif %}{% endif %}{% endfor %}</td>
+
+                            {% else %}
+                                <td></td>
+                            {% endif %}
 
                           <td> <span class="btn btn-warning">Em Andamento</span></td>
 
