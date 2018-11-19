@@ -11,9 +11,9 @@ connection.open()
 def create_Solicitation(sender, instance, created, **kwargs):
 
     if created:
-        teste = models.Autorizacao.objects.create(solicitation = instance, status = 1)
+        teste = models.Authorization.objects.create(solicitation = instance, status = 1)
         teste.save()
-        autori = models.Autorizacao.objects.all()
+        autori = models.Authorization.objects.all()
         for object in autori:
             if object.solicitation == instance :
                id = str(object.id)
@@ -29,8 +29,8 @@ def create_Solicitation(sender, instance, created, **kwargs):
         tasks.send_email.delay(data_end,data, motivo, id)
 
     elif not created:
-        autori = models.Autorizacao.objects.all()
-        autorizacao = models.Autorizacao.objects.filter(solicitation = instance).update(status=1)
+        autori = models.Authorization.objects.all()
+        Authorization = models.Authorization.objects.filter(solicitation = instance).update(status=1)
         for object in autori:
             if object.solicitation == instance :
                 id = str(object.id)
@@ -59,11 +59,11 @@ def create_Solicitation(sender, instance, created, **kwargs):
         # connection.close()
 
 
-post_save.connect(create_Solicitation, sender=models.Solicitacao)
+post_save.connect(create_Solicitation, sender=models.Solicitation)
 
 
 
-def Autorizar(sender, instance, created, **kwargs):
+def Authorization(sender, instance, created, **kwargs):
 
         # if created:
         #     pk = str('127.0.0.1:8000/reposicao/alterar/%s') %(instance.pk)
@@ -75,10 +75,10 @@ def Autorizar(sender, instance, created, **kwargs):
         #         connection=connection,)
         #     email.send()
         #     connection.close()
-        #     models.Autorizacao.objects.filter(id=instance.pk).update(status=(instance.status + 1))
+        #     models.Authorization.objects.filter(id=instance.pk).update(status=(instance.status + 1))
 
         if instance.status == 0:
-            autori = models.Solicitacao.objects.all()
+            autori = models.Solicitation.objects.all()
             for object in autori:
                 if object == instance.solicitation :
                    pk = str(object.id)
@@ -121,12 +121,12 @@ def Autorizar(sender, instance, created, **kwargs):
         #         connection=connection,)
         #     email.send()
         #     connection.close()
-        #     models.Autorizacao.objects.filter(id=instance.pk).update(status=(instance.status + 1))
+        #     models.Authorization.objects.filter(id=instance.pk).update(status=(instance.status + 1))
 
 
-post_save.connect(Autorizar, sender=models.Autorizacao)
+post_save.connect(Authorization, sender=models.Authorization)
 
-def Troca(sender, instance, created, **kwargs):
+def Exchange(sender, instance, created, **kwargs):
     if created:
         id = str(instance.pk)
         solicitado = str(instance.solicitado.email)
@@ -146,4 +146,4 @@ def Troca(sender, instance, created, **kwargs):
         solicitante = str(instance.solicitante.email)
         tasks.aceitarmensagem.delay(solicitado, solicitante, firstname)
 
-post_save.connect(Troca, sender=models.Troca)
+post_save.connect(Exchange, sender=models.Exchange)

@@ -1,8 +1,19 @@
 
-{% extends 'core/reposicao/listas/historico.html' %}
-
-{% block teste %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>teste</title>
+</head>
+<body>
 
 <p>teste</p>
 
-{% endblock %}
+<img src="{% static 'dist/img/user2-160x160.jpg' %}">
+
+<h1>{% for x in dados %}  {{x.components}}{{x.date_class}} {{x.date.restitution}} {{x.descripition}}{% endfor %}</h1>
+
+
+</body>
+</html>
+
+

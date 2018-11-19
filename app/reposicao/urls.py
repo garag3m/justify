@@ -13,8 +13,6 @@ app_name = 'reposicao'
 
 urlpatterns = [
 
-    #Home
-     path('reposicao/', core.Home.as_view(template_name='core/reposicao/home.html'), name='reposicao'),
     #Usuários
      path('perfil/', core.Perfil.as_view(), name='perfil'),
      path('perfilup/<pk>/', core.PerfilUpdate.as_view(), name='perfilup'),
@@ -23,33 +21,33 @@ urlpatterns = [
      #-----------------Formularios------------------------
 
      #formulario de Reposição
-     path('reposicao/formrep/', core.Reposicao.as_view(), name='formrep'),
+     path('reposicao/formrep/', core.Replacement.as_view(), name='formrep'),
 
      #formulario de Adiantamento de aula
-     path('reposicao/formadianta/', core.Adiantamento.as_view(), name='formadianta'),
+     path('reposicao/formadianta/', core.Anticipate.as_view(), name='formadianta'),
 
-     path('reposicao/aceitar/<pk>/', core.Aceitar.as_view(), name='aceitar'),
+     path('reposicao/aceitar/<pk>/', core.Accept.as_view(), name='aceitar'),
 
      #path('reposicao/aceitarform/<pk>/', core.AceitarCreateView.as_view(), name='aceitar-create'),
 
      #path('reposicao/negarform/<pk>/', core.NegarCreateView.as_view(), name='negar-create'),
 
 
-     path('reposicao/historico/', core.Historico.as_view(), name='historico'),
+     path('reposicao/historico/', core.Historic.as_view(), name='historico'),
 
-     path('teste/', core.Teste.as_view(), name="aa"),
+     path('teste/', core.Solicitation_PDF.as_view(), name="aa"),
 
-     path('reposicao/professores', core.Lista.as_view(), name='professores'),
+     path('reposicao/professores', core.List.as_view(), name='professores'),
 
-     path('mensagem/<pk>/', core.Mensagem.as_view(), name='mensagem'),
+     path('mensagem/<pk>/', core.Message.as_view(), name='mensagem'),
 
      path('reposicao/decisao/<pk>/', core.MensagemUp.as_view(), name='decisao'),
 
-     path('reposicao/planejamento/<pk>/', core.Planejamento.as_view(), name='planejamento'),
+     path('reposicao/planejamento/<pk>/', core.Planning.as_view(), name='planejamento'),
 
-     path('solicitacaoedit/<pk>/', core.Solicitacaoedit.as_view(), name='solicitacaoedit'),
+     path('solicitacaoedit/<pk>/', core.Solicitationedit.as_view(), name='solicitacaoedit'),
 
-     path('imprimirplanejamento/<pk>/', core.ImprimirPlanejamento.as_view(), name='imprimirplanejamento'),
+     path('imprimirplanejamento/<pk>/', core.Planning_PDF.as_view(), name='imprimirplanejamento'),
 
 
 

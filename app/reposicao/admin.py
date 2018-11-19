@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Motivo, Turma, Solicitacao, Planejamento, Autorizacao, Troca
+from .models import Reason, Team, Solicitation, Planning, Authorization, Exchange
 
 
-admin.site.register(Motivo)
-admin.site.register(Turma)
-admin.site.register(Solicitacao)
-admin.site.register(Planejamento)
-admin.site.register(Autorizacao)
-admin.site.register(Troca)
+admin.site.register(Reason)
+admin.site.register(Team)
+admin.site.register(Solicitation)
+admin.site.register(Planning)
+admin.site.register(Authorization)
+admin.site.register(Exchange)
