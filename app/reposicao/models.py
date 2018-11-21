@@ -31,6 +31,7 @@ class Team(CreateUpdateModel):
 class Solicitation(CreateUpdateModel):
     user = models.ForeignKey(UUIDUser,on_delete=models.CASCADE)
     justification = models.TextField(verbose_name='Justificativa')
+    file = models.FileField(verbose_name='Arquivo', null=True, blank=True, upload_to='original')
     date_miss_start = models.DateField(verbose_name='Data da Falta Inicial')
     date_miss_end = models.DateField(verbose_name='Data da Falta Final')
     reason = models.ForeignKey(Reason, on_delete = models.CASCADE, verbose_name='motivo', related_name='reason')
@@ -39,7 +40,7 @@ class Solicitation(CreateUpdateModel):
 
 
     def __str__(self):
-        return "%s" %(self.id)
+        return "%s" %(self.justification)
 
 
     class Meta:
@@ -68,8 +69,12 @@ class Planning(CreateUpdateModel):
     solicitation = models.ForeignKey(Solicitation, on_delete=models.CASCADE)
     components = models.CharField(max_length=100, verbose_name='Componente Curricular')
     date_class = models.DateField(verbose_name='Data da Aula')
+    time_class_first = models.TimeField(verbose_name='Início da Aula')
+    time_class_last = models.TimeField(verbose_name='Término da Aula')
     date_restitution = models.DateField(verbose_name='Data da Reposição')
-    descripition  = models.TextField(verbose_name='Descrição')
+    time_restitution_first = models.TimeField(verbose_name='Início da Falta')
+    time_restitution_last = models.TimeField(verbose_name='Término da Falta')
+    descripition = models.TextField(verbose_name='Descrição')
 
     def __str__(self):
         return "%s" %(self.date_restitution)

@@ -38,26 +38,29 @@ class Replacement(CreateView):
     model = models.Solicitation
     template_name = 'core/reposicao/forms/formreposicao.html'
     success_url = reverse_lazy('reposicao:historico')
-    fields = ['date_miss_start','date_miss_end', 'justification', 'reason','othes','team']
+    fields = ['date_miss_start','date_miss_end', 'justification','file', 'reason','othes','team' ]
 
     def form_valid(self, form):
          obj = form.save(commit=False)
          obj.user = self.request.user
+         for afile in self.request.FILES.getlist('original'):
+            obj.file = afile
          obj.save()
          return super(Replacement, self).form_valid(form)
-
 
 ## --- Forms Anticipate ---
 
 class Anticipate(CreateView):
     model = models.Solicitation
     template_name = 'core/reposicao/forms/formadiantamento.html'
-    success_url = reverse_lazy('reposicao:reposicao')
-    fields = ['date_miss_start','date_miss_end', 'justification', 'reason','othes','team']
+    success_url = reverse_lazy('reposicao:historico')
+    fields = ['date_miss_start','date_miss_end', 'justification','file', 'reason','othes','team']
 
     def form_valid(self, form):
          obj = form.save(commit=False)
          obj.user = self.request.user
+         for afile in self.request.FILES.getlist('original'):
+            obj.file = afile
          obj.save()
          return super(Anticipate, self).form_valid(form)
 
@@ -119,7 +122,7 @@ class Planning(DetailView):
     template_name = 'core/reposicao/forms/planejamento.html'
     def post(self, request, *args, **kwargs):
         Solicitation = models.Solicitation.objects.get(id=self.request.POST['solicitation'])
-        a =  models.Planning.objects.create(solicitation=Solicitation, components=self.request.POST['components'], date_class=self.request.POST['date_class'], date_restitution=self.request.POST['date_restitution'], descripition=self.request.POST['descripition'])
+        a =  models.Planning.objects.create(solicitation=Solicitation, components=self.request.POST['components'], date_class=self.request.POST['date_class'],time_class_first=self.request.POST['time_class_first'],time_class_last=self.request.POST['time_class_last'], date_restitution=self.request.POST['date_restitution'],time_restitution_first=self.request.POST['time_restitution_first'],time_restitution_last=self.request.POST['time_restitution_last'], descripition=self.request.POST['descripition'])
         a.save()
         return HttpResponseRedirect('/reposicao/historico/')
 

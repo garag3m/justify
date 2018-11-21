@@ -13,7 +13,7 @@
 <div class="box box-default" >
 
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="box-body">
   {% for field in form.visible_fields %}

@@ -21,23 +21,41 @@
             <div class="col-md-100">
               <div class="form-group">
                   <label class="col-sm-2 control-label"> Data da aula: </label>
-                  <div class="col-md-2">
+                  <div class="col-md-2" style="display: inline;" >
                     <input type="date" class="form-control" id="date_class" name="date_class" >
                   </div>
+                  <div class="col-md-2" style="display: inline;" >
+                    <input type="time" class="form-control" id="time_class_first" name="time_class_first" style="float: right; padding: 0 30%; font-size: 15px;" ><small style="color: gray" >* Horário Inicial da Aula</small>
+                  </div>
+
+                  <div class="col-md-2" style="display: inline;" >
+                    <input type="time" class="form-control" id="time_class_last" name="time_class_last" style="float: right; padding: 0 30%; font-size: 15px;" ><small style="color: gray">* Horário Final da Aula</small>
+                  </div>                      
+                  
               </div>
             </div>
           </div>
 
-          <div class="row" style="margin-bottom:20px;" style="margin-bottom:40px;" >
+          <div class="row" style="margin-bottom:15px;" style="margin-bottom:40px;" >
             <div class="col-md-100">
               <div class="form-group">
                 <label class="col-sm-2 control-label"> Data da falta: </label>
                 <div class="col-md-2">
                   <input type="date" class="form-control" id="date_restitution" name="date_restitution"  >
                 </div>
+                <div class="col-md-2" style="display: inline;" >
+                    <input type="time" class="form-control" id="time_restitution_first" name="time_restitution_first" style="float: right; padding: 0 30%; font-size: 15px;" ><small style="color: gray" >* Horário Inicial da Reposição</small>
+                  </div>
+
+                  <div class="col-md-2" style="display: inline;" >
+                    <input type="time" class="form-control" id="time_restitution_last" name="time_restitution_last" style="float: right; padding: 0 30%; font-size: 15px;" ><small style="color: gray">* Horário Final da Reposição</small>
+                  </div>              
               </div>
             </div>
           </div>
+
+         
+
           <div class="row" style="margin-bottom:20px;">
             <div class="col-md-100">
               <div class="form-group">
