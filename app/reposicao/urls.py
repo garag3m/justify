@@ -45,7 +45,7 @@ urlpatterns = [
 
      path('reposicao/planejamento/<pk>/', core.Planning.as_view(), name='planejamento'),
 
-     path('solicitacaoedit/<pk>/', core.Solicitationedit.as_view(), name='solicitacaoedit'),
+     path('reposicao/alterar/<pk>/', core.Solicitationedit.as_view(), name='solicitacaoedit'),
 
      path('imprimirplanejamento/<pk>/', core.Planning_PDF.as_view(), name='imprimirplanejamento'),
 
