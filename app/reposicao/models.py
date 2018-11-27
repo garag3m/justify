@@ -1,5 +1,6 @@
 from django.db import models
 from app.core.models import CreateUpdateModel, UUIDUser
+from django.contrib.auth.models import Group
 
 
 
@@ -16,6 +17,7 @@ class Reason(CreateUpdateModel):
 class Team(CreateUpdateModel):
     name = models.CharField('nome',max_length=100)
     period = models.IntegerField(verbose_name='Período')
+    area = models.ForeignKey(Group, blank=True, related_name="area_cood", related_query_name="area", on_delete=models.CASCADE)
 
 
     def __str__(self):

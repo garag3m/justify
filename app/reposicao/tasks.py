@@ -14,15 +14,16 @@ connection.open()
 
 
 @shared_task
-def send_email(data_end,data, motivo, id):
+def send_email(data_end,data, motivo, id, turma, coordenador):
     print ('objeto ola')
     pk = str('127.0.0.1:8000/reposicao/aceitar/%s')%id
     mensagen = str('Solicitacão de reposição de Aula \n Caro Coordenador, por meio desse email comunico que estarei ausente, pelo motivo de %s \n no período de %s à %s \n Para aceitar ou negar acesse o link : %s',)%(motivo, data, data_end, pk)
+    print('aqui')
     email = mail.EmailMessage(
         'Solicitacao De reposição',
         mensagen,
         'carlosabc436@gmail.com',
-        ['megatronstall@gmail.com'],
+        [coordenador],
         connection=connection,)
     email.send()
 

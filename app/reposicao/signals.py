@@ -9,29 +9,34 @@ connection = mail.get_connection()
 connection.open()
 
 def create_Solicitation(sender, instance, created, **kwargs):
+    var_edit = models.Authorization.objects.filter(solicitation = instance)
+    if len(var_edit) > 0:
+        for solicitations in var_edit:
+            if solicitations.status == 0:
+                authorization = models.Authorization.objects.filter(solicitation = instance).update(status=1)
+                for object in models.Authorization.objects.all():
+                    if object.solicitation == instance :
+                        id = str(object.id)
+                day = str(instance.date_miss_start.day)
+                month = str(instance.date_miss_start.month)
+                year = str(instance.date_miss_start.year)
+                data = str('%s/%s/%s') %(day, month, year)
+                day_end = str(instance.date_miss_end.day)
+                month_end = str(instance.date_miss_end.month)
+                year_end = str(instance.date_miss_end.year)
+                data_end = str('%s/%s/%s') %(day_end, month_end, year_end)
+                motivo = str(instance.reason.name)
+                for cord in models.UUIDUser.objects.all():
+                    for group in (cord.groups.all()):
+                        if group == instance.team.area:
+                            corden = str(cord.email)
+                            team = str(instance.team)
+                tasks.send_email.delay(data_end,data, motivo, id, team, corden )
 
-    if created:
-        teste = models.Authorization.objects.create(solicitation = instance, status = 1)
-        teste.save()
-        autori = models.Authorization.objects.all()
-        for object in autori:
-            if object.solicitation == instance :
-               id = str(object.id)
-        day = str(instance.date_miss_start.day)
-        month = str(instance.date_miss_start.month)
-        year = str(instance.date_miss_start.year)
-        data = str('%s/%s/%s') %(day, month, year)
-        day_end = str(instance.date_miss_end.day)
-        month_end = str(instance.date_miss_end.month)
-        year_end = str(instance.date_miss_end.year)
-        data_end = str('%s/%s/%s') %(day_end, month_end, year_end)
-        motivo = str(instance.reason.name)
-        tasks.send_email.delay(data_end,data, motivo, id)
-
-    elif not created:
-        autori = models.Authorization.objects.all()
-        Authorization = models.Authorization.objects.filter(solicitation = instance).update(status=1)
-        for object in autori:
+    else:
+        authorization = models.Authorization.objects.create(solicitation = instance, status = 1)
+        authorization.save()
+        for object in models.Authorization.objects.all():
             if object.solicitation == instance :
                 id = str(object.id)
         day = str(instance.date_miss_start.day)
@@ -43,7 +48,29 @@ def create_Solicitation(sender, instance, created, **kwargs):
         year_end = str(instance.date_miss_end.year)
         data_end = str('%s/%s/%s') %(day_end, month_end, year_end)
         motivo = str(instance.reason.name)
-        tasks.send_email.delay(data_end,data, motivo, id)
+        for cord in models.UUIDUser.objects.all():
+            for group in (cord.groups.all()):
+                if group == instance.team.area:
+                    corden = str(cord.email)
+                    team = str(instance.team)
+        tasks.send_email.delay(data_end,data, motivo, id, team, corden )
+
+    # elif not created:
+    #     autori = models.Authorization.objects.all()
+    #     Authorization = models.Authorization.objects.filter(solicitation = instance).update(status=1)
+    #     for object in autori:
+    #         if object.solicitation == instance :
+    #             id = str(object.id)
+    #     day = str(instance.date_miss_start.day)
+    #     month = str(instance.date_miss_start.month)
+    #     year = str(instance.date_miss_start.year)
+    #     data = str('%s/%s/%s') %(day, month, year)
+    #     day_end = str(instance.date_miss_end.day)
+    #     month_end = str(instance.date_miss_end.month)
+    #     year_end = str(instance.date_miss_end.year)
+    #     data_end = str('%s/%s/%s') %(day_end, month_end, year_end)
+    #     motivo = str(instance.reason.name)
+    #     tasks.send_email.delay(data_end,data, motivo, id)
         # for objeto in lista:
         #     if objeto.solicitation == instance:
         #         pk = str('127.0.0.1:8000/reposicao/aceitar/%s') %objeto.pk
