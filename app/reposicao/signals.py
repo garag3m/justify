@@ -47,7 +47,10 @@ def create_Solicitation(sender, instance, created, **kwargs):
         month_end = str(instance.date_miss_end.month)
         year_end = str(instance.date_miss_end.year)
         data_end = str('%s/%s/%s') %(day_end, month_end, year_end)
-        motivo = str(instance.reason.name)
+        if instance.reason.name == 'Outros':
+            motivo = str (instance.othes)
+        else:
+            motivo = str(instance.reason.name)
         for cord in models.UUIDUser.objects.all():
             for group in (cord.groups.all()):
                 if group == instance.team.area:
@@ -84,7 +87,10 @@ def Authorization(sender, instance, created, **kwargs):
             month_end = str(instance.solicitation.date_miss_end.month)
             year_end = str(instance.solicitation.date_miss_end.year)
             data_end = str('%s/%s/%s') %(day_end, month_end, year_end)
-            motivo = str(instance.solicitation.reason.name)
+             if instance.reason.name == 'Outros':
+                motivo = str (instance.othes)
+            else:
+                motivo = str(instance.reason.name)
             for cord in models.UUIDUser.objects.all():
                 for group in (cord.groups.all()):
                     if group == instance.solicitation.team.area:
@@ -109,7 +115,8 @@ def Authorization(sender, instance, created, **kwargs):
                 for group in (cord.groups.all()):
                     if group.name == 'Assistente de alunos':
                         corden = str(cord.email)
-            tasks.aceitaremaildenovo.delay(data_end,data, motivo, pk, email, corden)
+            tasks.Solicitation_acept.delay(pk, email)
+            tesks.acept.delay(data_end,data, motivo, corden)
 
         # elif (instance.status < 4):
         #     pk = str('127.0.0.1:8000/reposicao/aceitar/%s') %(instance.pk)
@@ -130,7 +137,7 @@ def Exchange(sender, instance, created, **kwargs):
     if created:
         id = str(instance.pk)
         solicitado = str(instance.solicitado.email)
-        solicitante = str(instance.solicitante.email)
+        solicitante = str(instance.solicitante.first_name)
         mensagem = str(instance.mensagem)
         tasks.mensagem.delay(id, solicitado, solicitante, mensagem)
 

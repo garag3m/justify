@@ -15,10 +15,8 @@ connection.open()
 
 @shared_task
 def send_email(data_end,data, motivo, id,coordenador):
-    print ('objeto ola')
     pk = str('127.0.0.1:8000/reposicao/aceitar/%s')%id
     mensagen = str('Solicitacão de reposição de Aula \n Caro Coordenador, por meio desse email comunico que estarei ausente, pelo motivo de %s \n no período de %s à %s \n Para aceitar ou negar acesse o link : %s',)%(motivo, data, data_end, pk)
-    print('aqui')
     email = mail.EmailMessage(
         'Solicitacao De reposição',
         mensagen,
@@ -53,30 +51,31 @@ def aceitar_email(d,dat, mot, id, coordenador, turma):
         connection=connection,)
     email.send()
 
-# @shared_task
-# def aceitaremaildenovo(d,dat, mot, id, email, assistente):
-#     mensagen = str('Solicitação de reposição de Aula \n Caro Coordenador, por meio desse email comunico que estarei ausente, pelo motivo de %s \n no período de %s à %s ')%(mot, dat, d)
-#     email = mail.EmailMessage(
-#         'Solicitacao de Reposição',
-#         mensagen,
-#         'carlosabc436@gmail.com',
-#         [email, assistente],
-#         connection=connection,)
-#     email.send()
-#     pk = str('127.0.0.1:8000/reposicao/planejamento/%s')%id
-#     mensagem = str(' Caro Docente, por meio desse email comunico que sua solicitação de reposição foi aprovada. \n Para preencher o planejamento de aula acesse o link : %s',)%(pk)
-#     email1 = mail.EmailMessage(
-#         'Solicitacao de Reposição',
-#         mensagem,
-#         'carlosabc436@gmail.com',
-#         ['carlosabc436@gmail.com'],
-#         connection=connection,)
-#     email1.send()
+@shared_task
+def Solicitation_acept( id, email):
+    pk = str('127.0.0.1:8000/reposicao/planejamento/%s') %(id)
+    mensagen = str('Solicitação de reposição de Aula \n Caro professor, sua Solicitação de reposição de aula foi aprovada\n Entre no site %s  para concluir o Planejamento da reposição')%(pk)
+    email = mail.EmailMessage(
+        'Solicitacao de Reposição',
+        mensagen,
+        'carlosabc436@gmail.com',
+        [email],
+        connection=connection,)
+
+@shared_task
+def acept(d,dat, mot, id, assistente):
+    mensagen = str('Solicitacão de reposição de Aula \n Caro Coordenador, por meio desse email comunico que estarei ausente, pelo motivo de %s \n no período de %s à %s.')%(mot, dat, d,)
+    email = mail.EmailMessage(
+        'Solicitacao de Reposição',
+        mensagen,
+        'carlosabc436@gmail.com',
+        [assistente],
+        connection=connection,)
 
 @shared_task
 def mensagem(id, solicitado, solicitante, mensagem):
     pk = str('127.0.0.1:8000/reposicao/decisao/%s')%id
-    mensagem = str('Solicitação de Troca de Aula \n Mensagem do professor solicitante \n %s  \n Para aceitar ou negar acesse o link : %s',)%(mensagem, pk)
+    mensagem = str('Solicitação de Troca de Aula \n Mensagem do professor %s \n %s  \n Para aceitar ou negar acesse o link : %s',)%(solicitante, mensagem, pk)
     email = mail.EmailMessage(
         'Solicitacao de Troca de Aula',
         mensagem,
@@ -98,7 +97,6 @@ def negar_mensagem( solicitado, solicitante, firstname):
 
 @shared_task
 def aceitarmensagem(solicitado, solicitante, firstname):
-    print ('qualquer coisa funciona')
     pk = str('127.0.0.1:8000/reposicao/formrep/')
     mensagem = str('Resposta da solicitação de troca de aula \n O professor %s aceitou sua solicitação de troca de aula.  \n Para enviar sua solicitação de reposição acesse o link : %s',)%(firstname, pk)
     email = mail.EmailMessage(
