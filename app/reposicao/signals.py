@@ -8,6 +8,8 @@ from . import models, views, tasks
 connection = mail.get_connection()
 connection.open()
 
+#------------- sistema de reposição de aula     ----------------
+
 def create_Solicitation(sender, instance, created, **kwargs):
     var_edit = models.Authorization.objects.filter(solicitation = instance)
     if len(var_edit) > 0:
@@ -58,12 +60,7 @@ def create_Solicitation(sender, instance, created, **kwargs):
                     corden = str(cord.email)
         tasks.send_email.delay(data_end,data, motivo, id,corden )
 
-
-
-
 post_save.connect(create_Solicitation, sender=models.Solicitation)
-
-
 
 def Authorization(sender, instance, created, **kwargs):
 
@@ -118,20 +115,9 @@ def Authorization(sender, instance, created, **kwargs):
             tasks.Solicitation_acept.delay(pk, email)
             tesks.acept.delay(data_end,data, motivo, corden)
 
-        # elif (instance.status < 4):
-        #     pk = str('127.0.0.1:8000/reposicao/aceitar/%s') %(instance.pk)
-        #     email = mail.EmailMessage(
-        #         'Hello',
-        #         pk,
-        #         'carlosabc436@gmail.com',
-        #         ['carlosabc436@gmail.com'],
-        #         connection=connection,)
-        #     email.send()
-        #     connection.close()
-        #     models.Authorization.objects.filter(id=instance.pk).update(status=(instance.status + 1))
-
-
 post_save.connect(Authorization, sender=models.Authorization)
+
+#-------- Sistema de Troca de Aula ----------------
 
 def Exchange(sender, instance, created, **kwargs):
     if created:
